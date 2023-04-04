@@ -15,16 +15,17 @@ class CSVReader:
             for row in reader:
                 record = {
                     "Column1": row[0],
-                    "company": row[1],
-                    "line": row[2],
-                    "departure_time": row[3],
-                    "arrival_time": row[4],
-                    "start_stop": row[5],
-                    "end_stop": row[6],
-                    "start_stop_lat": row[7],
-                    "start_stop_lon": row[8],
-                    "end_stop_lat": row[9],
-                    "end_stop_lon": row[10],
+                    "Column2": row[1],
+                    "company": row[2],
+                    "line": row[3],
+                    "departure_time": row[4],
+                    "arrival_time": row[5],
+                    "start_stop": row[6],
+                    "end_stop": row[7],
+                    "start_stop_lat": row[8],
+                    "start_stop_lon": row[9],
+                    "end_stop_lat": row[10],
+                    "end_stop_lon": row[11],
                 }
                 records.append(record)
         return records
