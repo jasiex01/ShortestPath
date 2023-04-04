@@ -34,22 +34,19 @@ class StopGraph:
         visited = set()
 
         queue = [(start_stop, start_time)]
-        counter = 0
         while queue:
             current_stop, current_time = queue.pop(0)
             #if current_stop == end_stop:
             #    break
-            counter += 1
             visited.add(current_stop)
 
             adjacent_stops = self.get_adjacent_vertices(current_stop)
             for adjacent_stop, departure_time, arrival_time, line in adjacent_stops:
                 if adjacent_stop not in self.graph:
-                    print('ok')
                     continue
                 departure_time = datetime.strptime(departure_time, "%H:%M:%S").time()
                 arrival_time = datetime.strptime(arrival_time, "%H:%M:%S").time()
-
+                #TODO naprawic obliczenia czasu
                 if departure_time >= current_time:
                     waiting_time = datetime.combine(datetime.today(), arrival_time) - datetime.combine(datetime.today(), current_time)
                 else:
@@ -69,14 +66,21 @@ class StopGraph:
                 if new_distance < distances[adjacent_stop]: #and arrival_time >= current_time
                     distances[adjacent_stop] = new_distance
                     best_connections[adjacent_stop] = [str(departure_time), str(arrival_time), line]
+                    if adjacent_stop == 'ogród botaniczny' and distances[adjacent_stop] == 840.0:
+                        print(current_stop)
+                        print(waiting_time)
+                        print(total_time)
+                        print(arrival_time)
                     if adjacent_stop not in visited:
                         queue.append((adjacent_stop, arrival_time))
 
         print((datetime.combine(datetime.today(), start_time) + timedelta(seconds=distances[end_stop])).time())
+        print(distances[end_stop])
         #generate path
-        path = [end_stop]
+        path = [end_stop, best_connections[end_stop], distances[end_stop]]
         current_stop = end_stop
         visited = set()
+        #TODO naprawic skladanie sciezki
         while current_stop != start_stop:
             shortest_distance = float('inf')
             next_stop = None
@@ -92,8 +96,7 @@ class StopGraph:
             current_stop = next_stop
 
         print("Shortest path:", path)
-        print(counter)
-        print(len(self.graph.keys()))
+
         '''
         for stop in path:
             if len(stop) == 2:
